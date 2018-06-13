@@ -5,8 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+    div {
+      width: 100px;
+      height: 100px;
+      background: green;
+    }
+  </style>
 </head>
 <body>
+  <div class="a"></div>
+  <div class="a"></div>
+  <div class="a"></div>
+  <div class="a"></div>
+  <div id="b">
+
+  </div>
+  <div id="c">
+
+  </div>
   <script src="./release/any-parallax.js"></script>
+  <script>
+    let ap = AnyParallax({el: ['.a', document.querySelector('#c')], b: 2});
+    // let ap = AnyParallax({el: document.querySelector('#c'), b: 3})
+    // let ap = AnyParallax(['.a', '#b', {
+    //   el: document.querySelector('#c'), b: 3
+    // }])
+    console.log(ap);
+  </script>
 </body>
 </html>
