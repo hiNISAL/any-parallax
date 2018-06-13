@@ -6,32 +6,48 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
-    div {
+    img {
+      position: fixed;
       width: 100px;
-      height: 100px;
-      background: green;
+    }
+    
+    #i1 {
+      left: 10%;
+      top: 10%;
+    }
+
+    #i2 {
+      right: 10%;
+      bottom: 10%;
+    }
+
+    #bg {
+      position: fixed;
+      z-index: -1;
+      background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528914401781&di=93088ebc18a5e32d41f780d23110a900&imgtype=0&src=http%3A%2F%2Fb.zol-img.com.cn%2Fdesk%2Fbizhi%2Fstart%2F1%2F1348713405322.jpg');
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      background-position: center top;
     }
   </style>
 </head>
 <body>
-  <div class="a"></div>
-  <div class="a"></div>
-  <div class="a"></div>
-  <div class="a"></div>
-  <div id="b">
+  <div id="bg" alt=""></div>
 
-  </div>
-  <div id="c">
-
-  </div>
+  <img id="i1" src="http://bbsimg.ali213.net/data/attachment/forum/201303/22/214221mdxxozo9owuu2ava.png" alt="">
+  <img id="i2" src="http://bbsimg.ali213.net/data/attachment/forum/201303/22/214207xiizegz624nabbx4.png" alt="">
   <script src="./release/any-parallax.js"></script>
   <script>
-    let ap = AnyParallax({el: ['.a', document.querySelector('#c')], b: 2});
-    // let ap = AnyParallax({el: document.querySelector('#c'), b: 3})
-    // let ap = AnyParallax(['.a', '#b', {
-    //   el: document.querySelector('#c'), b: 3
-    // }])
-    console.log(ap);
+    new AnyParallax({
+      speed: 1000,
+      depth: 0.1,
+      el: '#i1'
+    }, '#i2', {
+      el: '#bg',
+      depth: -.1,
+      distance: 15
+    });
   </script>
 </body>
 </html>
