@@ -1,8 +1,8 @@
 # any-parallax
 
-> 简单轻量的视差插件(2.88K)
+> 简单轻量的视差插件(4K)
 
-> simple and light parallax plugin (only 2.88K)
+> simple and light parallax plugin (only 4K)
 
 # 安装 Install
 
@@ -128,3 +128,38 @@ new AnyParallax(
   - 偏移方向与鼠标反向 (Reverse offset direction with the mouse)
   - 类型 (type) : boolean
   - 默认值 (default) : true
+
+## 方法 Methods
+
+- add
+  - 动态添加 (Dynamically add)
+  - 参数 (arguments)
+    - options (same to constructor)
+
+```
+let ap = new AnyParallax(['.a', '#b']);
+
+ap.add('#c');
+
+ap.add({
+  el: '#d',
+  distance: 100
+});
+```
+
+- remove
+  - 删除 (remove)
+
+```
+let ap = new AnyParallax(['.a', '#b', '#c', '#d']);
+
+ap.remove('.a');
+
+ap.remove(['.a', '#b'])
+
+ap.remove({ el: '#b' }, '#a');
+
+ap.remove([{ el: '#b' }, '#a']);
+
+ap.list[0].remove();
+```

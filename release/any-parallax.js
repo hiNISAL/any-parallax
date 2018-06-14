@@ -20,6 +20,20 @@
     return [].concat(toConsumableArray(root.querySelectorAll(selector)));
   }
 
+  function rmDup(arr) {
+    var res = [];
+    for (var i = 0; i < arr.length; res.indexOf(arr[i++]) === -1 && res.push(arr[i - 1])) {}
+
+    return res;
+  }
+
+  /*
+   * @CreateTime: Jun 14, 2018 12:21 PM
+   * @Author: NISAL
+   * @Contact: 535964903@qq.com
+   * @Last Modified By: NISAL
+   */
+
   var BASE_SPEED = 100;
   var BASE_DIS = 100;
   var BASE_DEPTH = 0;
@@ -28,34 +42,37 @@
   var CLIENT_HEIGHT = document.documentElement.clientHeight;
   var CLIENT_WIDTH = document.documentElement.clientWidth;
 
+  var counter = 0;
   /**
    * 构造函数
    * @param {*} options 
    */
   function AnyParallax() {
+    this.els = [];
+
     for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
       options[_key] = arguments[_key];
     }
 
-    this.list = this.handelOptions(options);
+    this.list = this._handelOptions(options);
 
-    this.moveBinder = this.move.bind(this);
+    this._moveBinder = this._move.bind(this);
 
-    this.bind();
+    this._bind();
   }
 
   /**
    * 绑定事件
    */
-  AnyParallax.prototype.bind = function () {
-    window.addEventListener('mousemove', this.moveBinder);
+  AnyParallax.prototype._bind = function () {
+    window.addEventListener('mousemove', this._moveBinder);
   };
 
   /**
    * 事件处理程序
    * @param {*} e 
    */
-  AnyParallax.prototype.move = function (e) {
+  AnyParallax.prototype._move = function (e) {
     var clientX = e.clientX,
         clientY = e.clientY;
 
@@ -128,12 +145,10 @@
    * 处理配置项
    * @param {*} options 
    */
-  AnyParallax.prototype.handelOptions = function (options) {
+  AnyParallax.prototype._handelOptions = function (options) {
     var arr = [];
-    console.log(options);
-    if (Array.isArray(options[0])) options = options[0];
 
-    // if (!Array.isArray(options)) options = [options];
+    if (Array.isArray(options[0])) options = options[0];
 
     // 如果配置项是数组 则遍历
     var _iteratorNormalCompletion3 = true;
@@ -146,10 +161,10 @@
 
         if (v instanceof HTMLElement || typeof v === 'string') {
           // 如果是字符串 或者dom元素
-          arr.push.apply(arr, toConsumableArray(this.parseOption({ el: v })));
+          arr.push.apply(arr, toConsumableArray(this._parseOption({ el: v })));
         } else {
           // 如果不是 那就是对象
-          arr.push.apply(arr, toConsumableArray(this.parseOption(v)));
+          arr.push.apply(arr, toConsumableArray(this._parseOption(v)));
         }
       }
     } catch (err) {
@@ -174,12 +189,14 @@
    * 生成最终配置项
    * @param {*} option 
    */
-  AnyParallax.prototype.parseOption = function (option) {
+  AnyParallax.prototype._parseOption = function (option) {
+    var _this = this;
+
     var opts = [];
 
     if (Array.isArray(option.el)) {
       // 如果el是数组 则遍历生成每一个对应的配置项
-      var normalizeOpt = Object.assign({}, this.normalizeOption(option));
+      var normalizeOpt = Object.assign({}, this._normalizeOption(option));
 
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
@@ -208,7 +225,7 @@
       }
     } else {
       // 不是数组则直接push进去
-      opts.push(this.normalizeOption(option));
+      opts.push(this._normalizeOption(option));
     }
 
     // 对所有配置项处理 如果el是选择器 则转成真实dom
@@ -217,7 +234,8 @@
     opts.forEach(function (opt) {
 
       // 如果是dom元素直接添加
-      if (opt.el instanceof HTMLElement) {
+      if (opt.el instanceof HTMLElement && !_this.els.includes(opt.el)) {
+        _this.els.push(opt.el);
         opt.el.style.transition = 'transform ' + opt.speed / 1000 + 's cubic-bezier(0.960, 1.005, 0.885, 1.035)' + (opt.el.style.transition ? opt.el.style.transition : '');
         opt.el.style.transform = 'scale(' + (1 - opt.depth) + ', ' + (1 - opt.depth) + ')';
         resArr.push(Object.assign(opt, { el: [opt.el] }));
@@ -228,11 +246,21 @@
       var els = $$(opt.el);
 
       if (els.length) {
-        els.forEach(function (el) {
-          el.style.transition = 'transform ' + opt.speed / 1000 + 's cubic-bezier(0.960, 1.005, 0.885, 1.035)' + (el.style.transition ? el.style.transition : '');
-          el.style.transform = 'scale(' + (1 - opt.depth) + ', ' + (1 - opt.depth) + ')';
+        var _els;
+
+        els = els.filter(function (el) {
+          return !_this.els.includes(el);
         });
-        resArr.push(Object.assign(opt, { el: els }));
+
+        (_els = _this.els).push.apply(_els, toConsumableArray(els));
+
+        if (els.length) {
+          els.forEach(function (el) {
+            el.style.transition = 'transform ' + opt.speed / 1000 + 's cubic-bezier(0.960, 1.005, 0.885, 1.035)' + (el.style.transition ? el.style.transition : '');
+            el.style.transform = 'scale(' + (1 - opt.depth) + ', ' + (1 - opt.depth) + ')';
+          });
+          resArr.push(Object.assign(opt, { el: els }));
+        }
       }
     });
 
@@ -243,13 +271,93 @@
    * 标准化配置项
    * @param {*} option 
    */
-  AnyParallax.prototype.normalizeOption = function (option) {
+  AnyParallax.prototype._normalizeOption = function (option) {
     if (!('depth' in option)) option.depth = BASE_DEPTH;
     if (!('speed' in option)) option.speed = BASE_SPEED;
     if (!('distance' in option)) option.distance = BASE_DIS;
     if (!('reverse' in option)) option.reverse = BASE_REVERSE;
+    option.id = counter++;
+
+    option.remove = this._remove.bind(this, option.id);
 
     return option;
+  };
+
+  /**
+   * 通过id删除
+   * @param {*} id 
+   */
+  AnyParallax.prototype._remove = function (id) {
+    var _this2 = this;
+
+    if (!this.list.length) return;
+
+    var index = this.list.findIndex(function (l) {
+      return l.id === id;
+    });
+
+    this.list[index].el.forEach(function (el) {
+      el.style.transform = '';
+      _this2.els.splice(_this2.els.indexOf(el), 1);
+    });
+
+    this.list.splice(index, 1);
+  };
+
+  /**
+   * 添加
+   * @param {*} options 
+   */
+  AnyParallax.prototype.add = function () {
+    for (var _len2 = arguments.length, options = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      options[_key2] = arguments[_key2];
+    }
+
+    this.list = this._handelOptions(options).concat(this.list);
+  };
+
+  /**
+   * 移除
+   * @param {*} condition 
+   */
+  AnyParallax.prototype.remove = function () {
+    var _this3 = this;
+
+    for (var _len3 = arguments.length, condition = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      condition[_key3] = arguments[_key3];
+    }
+
+    if (Array.isArray(condition[0])) condition = [condition[0]];
+
+    var els = [];
+
+    condition.forEach(function (c) {
+      if (typeof c === 'string') {
+        var _els2;
+
+        (_els2 = els).push.apply(_els2, toConsumableArray($$(c)));
+      } else {
+        els.push(c);
+      }
+    });
+
+    els = rmDup(els);
+
+    els.forEach(function (el) {
+      _this3.list.forEach(function (l) {
+        l.el.forEach(function (e) {
+          if (e === el) {
+            el.style.transform = '';
+            l.el.splice(l.el.indexOf(e), 1);
+            _this3.els.splice(_this3.els.indexOf(e), 1);
+          }
+        });
+
+        if (!l.el.length) {
+          _this3.list.splice(_this3.list.indexOf(l), 1);
+        }
+      });
+    });
   };
 
   return AnyParallax;

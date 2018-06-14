@@ -12,8 +12,8 @@
     }
     
     #i1 {
-      left: 10%;
-      top: 10%;
+      left: 45%;
+      top: 45%;
     }
 
     #i2 {
@@ -30,6 +30,17 @@
       width: 100%;
       background-position: center top;
     }
+
+    #b {
+      position: fixed;
+      left: 20%;
+      top: 20%;
+      background: green;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #134897;
+    }
   </style>
 </head>
 <body>
@@ -37,17 +48,30 @@
 
   <img id="i1" src="http://bbsimg.ali213.net/data/attachment/forum/201303/22/214221mdxxozo9owuu2ava.png" alt="">
   <img id="i2" src="http://bbsimg.ali213.net/data/attachment/forum/201303/22/214207xiizegz624nabbx4.png" alt="">
+
+  <div id="b">
+  
+  </div>
   <script src="./release/any-parallax.js"></script>
   <script>
-    new AnyParallax({
-      speed: 1000,
+    let ap = new AnyParallax({
+      speed: 100,
       depth: 0.1,
+      distance: 1000,
       el: '#i1'
     }, '#i2', {
       el: '#bg',
       depth: -.1,
       distance: 15
+    }, {
+      el: '#bg',
+      depth: -.1,
+      distance: 15
     });
+
+    setTimeout(function() {
+      ap.add('#b')
+    }, 2000);
   </script>
 </body>
 </html>
