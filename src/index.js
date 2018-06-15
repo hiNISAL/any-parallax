@@ -14,6 +14,11 @@ let BASE_REVERSE = true;
 let CLIENT_HEIGHT = document.documentElement.clientHeight;
 let CLIENT_WIDTH = document.documentElement.clientWidth;
 
+window.addEventListener('resize', function() {
+  CLIENT_HEIGHT = document.documentElement.clientHeight;
+  CLIENT_WIDTH = document.documentElement.clientWidth;
+});
+
 let counter = 0;
 /**
  * 构造函数

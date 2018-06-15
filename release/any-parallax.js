@@ -42,6 +42,11 @@
   var CLIENT_HEIGHT = document.documentElement.clientHeight;
   var CLIENT_WIDTH = document.documentElement.clientWidth;
 
+  window.addEventListener('resize', function () {
+    CLIENT_HEIGHT = document.documentElement.clientHeight;
+    CLIENT_WIDTH = document.documentElement.clientWidth;
+  });
+
   var counter = 0;
   /**
    * 构造函数

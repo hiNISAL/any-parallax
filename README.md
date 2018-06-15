@@ -1,8 +1,8 @@
 # any-parallax
 
-> 简单轻量的视差插件(4K)
+> 简单轻量的视差插件
 
-> simple and light parallax plugin (only 4K)
+> simple and light parallax plugin
 
 # 安装 Install
 
