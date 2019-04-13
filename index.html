@@ -5,8 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+    img {
+      position: fixed;
+      width: 100px;
+    }
+    
+    #i1 {
+      left: 45%;
+      top: 45%;
+    }
+
+    #i2 {
+      right: 10%;
+      bottom: 10%;
+    }
+
+    #bg {
+      position: fixed;
+      z-index: -1;
+      background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528914401781&di=93088ebc18a5e32d41f780d23110a900&imgtype=0&src=http%3A%2F%2Fb.zol-img.com.cn%2Fdesk%2Fbizhi%2Fstart%2F1%2F1348713405322.jpg');
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      background-position: center top;
+    }
+
+    #b {
+      position: fixed;
+      left: 20%;
+      top: 20%;
+      background: green;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #134897;
+    }
+  </style>
 </head>
 <body>
-  <script src="./release/struct-teacher.js"></script>
+  <div id="bg" alt=""></div>
+
+  <img id="i1" src="http://bbsimg.ali213.net/data/attachment/forum/201303/22/214221mdxxozo9owuu2ava.png" alt="">
+  <img id="i2" src="http://bbsimg.ali213.net/data/attachment/forum/201303/22/214207xiizegz624nabbx4.png" alt="">
+
+  <div id="b">
+  
+  </div>
+  <script src="./release/any-parallax.js"></script>
+  <script>
+    let ap = new AnyParallax({
+      speed: 100,
+      depth: 0.1,
+      distance: 1000,
+      el: '#i1'
+    }, '#i2', {
+      el: '#bg',
+      depth: -.1,
+      distance: 15
+    }, {
+      el: '#bg',
+      depth: -.1,
+      distance: 15
+    });
+
+    setTimeout(function() {
+      ap.add('#b')
+    }, 2000);
+  </script>
 </body>
 </html>

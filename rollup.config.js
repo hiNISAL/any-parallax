@@ -10,9 +10,9 @@ const minify = process.env.MINIFY;
 const config = {
   input: 'src/index.js',
   output: {
-    file: 'release/struct-teacher.js',
+    file: 'release/any-parallax.js',
     format: 'umd',
-    name: 'StructTeacher'
+    name: 'AnyParallax'
   },
   plugins: [
 
@@ -36,10 +36,10 @@ if (isDev) {
   
 } else {
   if (minify === 'true') {
-    config.output.file = 'release/struct-teacher.min.js';
+    config.output.file = 'release/any-parallax.min.js';
     config.plugins.push(uglify.uglify());
   } else {
-    config.output.file = 'release/struct-teacher.js';
+    config.output.file = 'release/any-parallax.js';
   }
 
   config.plugins.push(
